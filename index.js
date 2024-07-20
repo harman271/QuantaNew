@@ -1,16 +1,18 @@
 window.addEventListener('load', () => {
-  fetchNews('home');
+  fetchData('https://api.worldnewsapi.com/top-news?source-country=in&language=en', 'India');
 });
 
 let count = 0;
-const apiKey = '8a980c0539164f38af6463cdbe651cf1';
-const container = document.getElementById('container');
-const searchresultspan = document.getElementById('searchresultspan');
-const searcheditems = document.getElementById('searcheditems');
 
 async function fetchData(url, search) {
   count = 0;
+  const container = document.getElementById('container');
+  const searchresultspan = document.getElementById('searchresultspan');
   searchresultspan.innerText = count;
+  const searcheditems = document.getElementById('searcheditems');
+  searcheditems.innerText="";
+  const apiKey = '543b3f2fe08449b183c4abe5150f2f25';
+
   try {
     const response = await fetch(url, {
       method: 'GET',
@@ -26,7 +28,7 @@ async function fetchData(url, search) {
     const data = await response.json();
     container.innerHTML = '';
 
-    if (data && (data.top_news || data.news)) {
+    if (data) {
       processNewsData(data, search);
     } else {
       console.error('No news data found.');
@@ -34,27 +36,31 @@ async function fetchData(url, search) {
     }
   } catch (error) {
     console.error('Error fetching data:', error);
-    searcheditems.innerText = 'Error fetching data';
   }
 }
 
-function processNewsData(data, search) {
-  if (data.top_news) {
+function processNewsData(data, search){
+  const container = document.getElementById('container');
+  const searcheditems = document.getElementById('searcheditems');
+  const searchresultspan = document.getElementById('searchresultspan');
+
+  if (data.top_news){
+  console.log(data);
     data.top_news.forEach(itemm => {
       itemm.news.forEach(item => {
-        createNewsCard(item, search);
+        createNewsCard(item, search, container, searchresultspan, searcheditems);
       });
     });
   } else if (data.news) {
     data.news.forEach(item => {
-      createNewsCard(item, search);
+      createNewsCard(item, search, container, searchresultspan, searcheditems);
     });
   } else {
     searcheditems.innerText = 'No results found';
   }
 }
 
-function createNewsCard(item, search) {
+function createNewsCard(item, search, container, searchresultspan, searcheditems) {
   if (item.image && item.image !== "") {
     searcheditems.innerText = search;
     count++;
@@ -109,25 +115,20 @@ document.getElementById('searchInput').addEventListener('keypress', (event) => {
     event.preventDefault();
     const query = event.target.value.trim();
     if (query) {
-      fetchNews(query);
-      event.target.value = ''; 
+      const url = `https://api.worldnewsapi.com/search-news?text=${query}&language=en`;
+      fetchData(url, query);
     } else {
       alert("Enter some text");
     }
   }
 });
 
-function fetchNews(topics) {
-  let url = '';
-  let search = topics;
-
-  if (topics === 'home') {
-    url = 'https://api.worldnewsapi.com/top-news?source-country=in&language=en';
-    search = 'India';
-  } else {
-    url = `https://api.worldnewsapi.com/search-news?text=${encodeURIComponent(topics)}&language=en`;
+function fetchNews(topics){
+  if(topics=='home'){
+    fetchData('https://api.worldnewsapi.com/top-news?source-country=in&language=en', 'India');
   }
-
-  fetchData(url, search);
+  else{
+    const url = `https://api.worldnewsapi.com/search-news?text=${topics}&language=en`;
+    fetchData(url,topics);
+  }
 }
-

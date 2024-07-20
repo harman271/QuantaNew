@@ -1,7 +1,7 @@
-window.addEventListener('contextmenu',event=>{
-  alert("Right Click is not allowed");
-  event.preventDefault();
-})
+// window.addEventListener('contextmenu',event=>{
+//   alert("Right Click is not allowed");
+//   event.preventDefault();
+// })
 
 window.addEventListener('load', () => {
   fetchNews('home');

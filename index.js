@@ -1,66 +1,79 @@
 window.addEventListener('load', () => {
-  fetchData('https://api.worldnewsapi.com/top-news?source-country=in&language=en', 'India');
+  fetchNews('home');
 });
 
 let count = 0;
+const apiKeys = ['2dd75c8da8ca46368966099abbe852a2', '543b3f2fe08449b183c4abe5150f2f25', '65b479aea55047529eef5f407c431d60','8a980c0539164f38af6463cdbe651cf1'];
+let currentApiKeyIndex = 0;
+
+const container = document.getElementById('container');
+const searchresultspan = document.getElementById('searchresultspan');
+const searcheditems = document.getElementById('searcheditems');
 
 async function fetchData(url, search) {
   count = 0;
-  const container = document.getElementById('container');
-  const searchresultspan = document.getElementById('searchresultspan');
   searchresultspan.innerText = count;
-  const searcheditems = document.getElementById('searcheditems');
-  searcheditems.innerText="";
-  const apiKey = '2dd75c8da8ca46368966099abbe852a2';
+  
+  for (let attempt = 0; attempt < apiKeys.length; attempt++) {
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'x-api-key': apiKeys[currentApiKeyIndex]
+        }
+      });
 
-  try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'x-api-key': apiKey
+      if (!response.ok) {
+        if (response.status === 429) {
+          console.warn(`Rate limit exceeded for API key ${currentApiKeyIndex + 1}. Trying next key...`);
+          currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
+          continue;
+        } else {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
       }
-    });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      const data = await response.json();
+      container.innerHTML = '';
+
+      if (data && (data.top_news || data.news)) {
+        processNewsData(data, search);
+        return;
+      } else {
+        console.error('No news data found.');
+        searcheditems.innerText = '';
+        alert("No results founds")
+        searcheditems.value="";
+        return;
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      searcheditems.innerText = '';
+      alert("No reults found");
+      return;
     }
-
-    const data = await response.json();
-    container.innerHTML = '';
-
-    if (data) {
-      processNewsData(data, search);
-    } else {
-      console.error('No news data found.');
-      searcheditems.innerText = 'No results found';
-    }
-  } catch (error) {
-    console.error('Error fetching data:', error);
   }
 }
 
-function processNewsData(data, search){
-  const container = document.getElementById('container');
-  const searcheditems = document.getElementById('searcheditems');
-  const searchresultspan = document.getElementById('searchresultspan');
-
-  if (data.top_news){
-  console.log(data);
+function processNewsData(data, search) {
+  if (data.top_news) {
     data.top_news.forEach(itemm => {
       itemm.news.forEach(item => {
-        createNewsCard(item, search, container, searchresultspan, searcheditems);
+        createNewsCard(item, search);
       });
     });
   } else if (data.news) {
     data.news.forEach(item => {
-      createNewsCard(item, search, container, searchresultspan, searcheditems);
+      createNewsCard(item, search);
     });
   } else {
-    searcheditems.innerText = 'No results found';
+    searcheditems.innerText = '';
+    alert("No results found");
+    searcheditems.value="";
   }
 }
 
-function createNewsCard(item, search, container, searchresultspan, searcheditems) {
+function createNewsCard(item, search) {
   if (item.image && item.image !== "") {
     searcheditems.innerText = search;
     count++;
@@ -105,7 +118,6 @@ function createNewsCard(item, search, container, searchresultspan, searcheditems
     container.appendChild(card);
   }
 }
-
 function truncateText(text, maxLength) {
   return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
 }
@@ -119,6 +131,7 @@ document.getElementById('searchInput').addEventListener('keypress', (event) => {
       fetchData(url, query);
     } else {
       alert("Enter some text");
+      searcheditems.value="";
     }
   }
 });

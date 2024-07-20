@@ -11,7 +11,7 @@ async function fetchData(url, search) {
   searchresultspan.innerText = count;
   const searcheditems = document.getElementById('searcheditems');
   searcheditems.innerText="";
-  const apiKey = '543b3f2fe08449b183c4abe5150f2f25';
+  const apiKey = '2dd75c8da8ca46368966099abbe852a2';
 
   try {
     const response = await fetch(url, {

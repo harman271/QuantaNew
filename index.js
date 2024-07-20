@@ -1,7 +1,7 @@
-// window.addEventListener('contextmenu',event=>{
-//   alert("Right Click is not allowed");
-//   event.preventDefault();
-// })
+window.addEventListener('contextmenu',event=>{
+  alert("Right Click is not allowed");
+  event.preventDefault();
+})
 
 window.addEventListener('load', () => {
   fetchNews('home');
@@ -144,7 +144,7 @@ function fetchNews(topics){
     fetchData('https://api.worldnewsapi.com/top-news?source-country=in&language=en', 'India');
   }
   else{
-    const url = `https://api.worldnewsapi.com/search-news?text=${topics}&language=en`;
+     const url = `https://api.worldnewsapi.com/search-news?api-key=${x-api-key}&text=${topics}&language=en`;
     fetchData(url,topics);
   }
 }

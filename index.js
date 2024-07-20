@@ -1,7 +1,7 @@
-// window.addEventListener('contextmenu',event=>{
-//   alert("Right Click is not allowed");
-//   event.preventDefault();
-// })
+window.addEventListener('contextmenu',event=>{
+  alert("Right Click is not allowed");
+  event.preventDefault();
+})
 
 window.addEventListener('load', () => {
   fetchNews('home');
@@ -12,10 +12,12 @@ let currentApiKeyIndex = 0;
 const container = document.getElementById('container');
 const searchresultspan = document.getElementById('searchresultspan');
 const searcheditems = document.getElementById('searcheditems');
+const loadingSpinner = document.getElementById('loading');
 
 async function fetchData(url, search) {
   count = 0;
   searchresultspan.innerText = count;
+  loadingSpinner.style.display = 'block';
   
   for (let attempt = 0; attempt < apiKeys.length; attempt++) {
     try {
@@ -27,22 +29,28 @@ async function fetchData(url, search) {
       });
 
       if (!response.ok) {
-        if (response.status === 429) {
+        if (response.status === 401) {  
+          console.warn(`Unauthorized for API key ${currentApiKeyIndex + 1}. Trying next key...`);
+          currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
+          continue; 
+        } else if (response.status === 402) { 
           console.warn(`Rate limit exceeded for API key ${currentApiKeyIndex + 1}. Trying next key...`);
           currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
-          continue;
+          continue; 
         } else {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
       }
       const data = await response.json();
       container.innerHTML = '';
+      loadingSpinner.style.display = 'none';
 
       if (data && (data.top_news || data.news)) {
         processNewsData(data, search);
         return;
       } else {
         console.error('No news data found.');
+        loadingSpinner.style.display = 'none';
         searcheditems.innerText = '';
         alert("No results founds")
         searcheditems.value="";
@@ -50,6 +58,7 @@ async function fetchData(url, search) {
       }
     } catch (error) {
       console.error('Error fetching data:', error);
+      loadingSpinner.style.display = 'none';
       searcheditems.innerText = '';
       alert("No reults found");
       return;
@@ -143,7 +152,7 @@ function fetchNews(topics){
     fetchData('https://api.worldnewsapi.com/top-news?source-country=in&language=en', 'India');
   }
   else{
-    const url = `https://api.worldnewsapi.com/search-news?api-key=${x-api-key}&text=${topics}&language=en`;
+    const url = `https://api.worldnewsapi.com/search-news?text=${topics}&language=en&earliest-publish-date=2024-04-01`;
     fetchData(url,topics);
   }
 }

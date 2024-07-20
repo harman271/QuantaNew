@@ -1,51 +1,141 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuantaNews - Breaking News, Latest Updates, and Analysis</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="index.css">
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#" onclick="fetchNews('home')">QuantaNews</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-                <ul class="navbar-nav">
-                    <li class="nav-item active"><a class="nav-link" href="#" onclick="fetchNews('home')">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="fetchNews('World')">World</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="fetchNews('Business')">Business</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="fetchNews('Sports')">Sports</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="fetchNews('Entertainment')">Entertainment</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="fetchNews('Games')">Games</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="fetchNews('Music')">Music</a></li>
-                </ul>
-            </div>
-            <form class="form-inline my-2 my-lg-0">
-                <input id="searchInput" class="form-control mr-sm-2" type="search" placeholder="Search for more topics" aria-label="Search">
-            </form>
-        </div>
-        <div class="howmanysearchresult">
-            <h3>Result found:<span id="searchresultspan">0</span></h3>
-        </div>
-    </nav>
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-12">
-                <div class="searchitems text-center">
-                    <h1>Searched: <span id="searcheditems"></span></h1>
-                </div>
-            </div>
-        </div>
-        <div class="row" id="container"></div>
-    </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="index.js"></script>
-</body>
-</html>
+*{
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+html {
+  color: white;
+  font-family: monospace;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+}
+.howmanysearchresult h3{
+  font-size:18px;
+  color: white;
+  font-family:initial;
+}
+#container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.searchitems {
+  text-align: center;
+  color: black;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  cursor: pointer;
+  transform: translateY(-5px);
+}
+
+.card .imagecontainer {
+  height: 200px;
+  overflow: hidden;
+}
+
+.card .imagecontainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.card .content {
+  padding: 16px;
+}
+
+.card .title {
+  font-size: 20px;
+  font-weight: bold;
+}
+.loading-spinner {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #3498db; 
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  left:45%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.card .description {
+  font-size: 15px;
+  color: #555;
+}
+
+.card .link {
+  margin-top: 10px;
+}
+
+.card .link a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+footer {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .card {
+    flex: 1 1 calc(50% - 20px);
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    flex: 1 1 100%;
+    margin: 18px;
+  }
+  .loading-spinner {
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #3498db; 
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
+    left:32%;
+    transform: translate(-50%, -50%);
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+}

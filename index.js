@@ -115,8 +115,8 @@ document.getElementById('searchInput').addEventListener('keypress', (event) => {
     const query = event.target.value.trim();
     if (query) {
       const url = `https://api.worldnewsapi.com/search-news?text=${query}&language=en`;
-      searchInput.value="";
       fetchData(url, query);
+       event.target.value = ''; 
     } else {
       alert("Enter some text");
     }

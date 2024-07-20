@@ -44,7 +44,6 @@ function processNewsData(data, search){
   const searchresultspan = document.getElementById('searchresultspan');
 
   if (data.top_news){
-  console.log(data);
     data.top_news.forEach(itemm => {
       itemm.news.forEach(item => {
         createNewsCard(item, search, container, searchresultspan, searcheditems);

@@ -7,7 +7,7 @@ window.addEventListener('load', () => {
   fetchNews('home');
 });
 let count = 0;
-const apiKeys = ['2dd75c8da8ca46368966099abbe852a2', '543b3f2fe08449b183c4abe5150f2f25', '65b479aea55047529eef5f407c431d60','8a980c0539164f38af6463cdbe651cf1','7c3260f46aa74dd9b08f8cd8b5b5d942'];
+const apiKeys = ['7c3260f46aa74dd9b08f8cd8b5b5d942','2dd75c8da8ca46368966099abbe852a2', '543b3f2fe08449b183c4abe5150f2f25', '65b479aea55047529eef5f407c431d60','8a980c0539164f38af6463cdbe651cf1'];
 let currentApiKeyIndex = 0;
 const container = document.getElementById('container');
 const searchresultspan = document.getElementById('searchresultspan');
@@ -35,7 +35,6 @@ async function fetchData(url, search) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
       }
-
       const data = await response.json();
       container.innerHTML = '';
 
@@ -144,7 +143,7 @@ function fetchNews(topics){
     fetchData('https://api.worldnewsapi.com/top-news?source-country=in&language=en', 'India');
   }
   else{
-     const url = `https://api.worldnewsapi.com/search-news?api-key=${x-api-key}&text=${topics}&language=en`;
+    const url = `https://api.worldnewsapi.com/search-news?api-key=${x-api-key}&text=${topics}&language=en`;
     fetchData(url,topics);
   }
 }

@@ -87,7 +87,6 @@ function processNewsData(data, search) {
 function createNewsCard(item, search) {
   if (item.image && item.image !== "") {
     searcheditems.innerText = search;
-    count++;
     searchresultspan.innerText = count;
 
     const card = document.createElement('div');
@@ -108,7 +107,7 @@ function createNewsCard(item, search) {
     img.onerror = () => {
       container.removeChild(card);
     };
-
+    count++;
     const content = document.createElement('div');
     content.classList.add('content');
 

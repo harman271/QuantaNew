@@ -2,11 +2,10 @@ window.addEventListener('contextmenu',event=>{
   alert("Right Click is not allowed");
   event.preventDefault();
 })
-
 window.addEventListener('load', () => {
   fetchNews('home');
 });
-let count = 0;
+var count = 0;
 const apiKeys = ['7c3260f46aa74dd9b08f8cd8b5b5d942','2dd75c8da8ca46368966099abbe852a2', '543b3f2fe08449b183c4abe5150f2f25', '65b479aea55047529eef5f407c431d60','8a980c0539164f38af6463cdbe651cf1'];
 let currentApiKeyIndex = 0;
 const container = document.getElementById('container');
@@ -67,15 +66,26 @@ async function fetchData(url, search) {
 }
 
 function processNewsData(data, search) {
+  count=0;
   if (data.top_news) {
+    if(data.top_news==""){
+      const url = 'https://api.worldnewsapi.com/search-news?text=India&language=en';
+      fetchData(url,'India');
+    }
+    else{
     data.top_news.forEach(itemm => {
       itemm.news.forEach(item => {
         createNewsCard(item, search);
+        searchresultspan.innerText = count;
       });
     });
-  } else if (data.news) {
+  } 
+}
+  else if (data.news) {
+    count=0;
     data.news.forEach(item => {
       createNewsCard(item, search);
+      searchresultspan.innerText = count;
     });
   } else {
     searcheditems.innerText = '';
@@ -85,10 +95,8 @@ function processNewsData(data, search) {
 }
 
 function createNewsCard(item, search) {
-  if (item.image && item.image !== "") {
+  if (item.image && item.image !== '') {
     searcheditems.innerText = search;
-    searchresultspan.innerText = count;
-
     const card = document.createElement('div');
     card.classList.add('card');
 
@@ -106,8 +114,10 @@ function createNewsCard(item, search) {
 
     img.onerror = () => {
       container.removeChild(card);
+      count--;
+      searchresultspan.innerText = count;
     };
-    count++;
+
     const content = document.createElement('div');
     content.classList.add('content');
 
@@ -126,6 +136,9 @@ function createNewsCard(item, search) {
     card.appendChild(imageContainer);
     card.appendChild(content);
     container.appendChild(card);
+
+    count++;
+    searchresultspan.innerText = count;
   }
 }
 function truncateText(text, maxLength) {

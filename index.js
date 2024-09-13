@@ -6,7 +6,7 @@ window.addEventListener('load', () => {
   fetchNews('home');
 });
 var count = 0;
-const apiKeys = ['7c3260f46aa74dd9b08f8cd8b5b5d942','2dd75c8da8ca46368966099abbe852a2', '543b3f2fe08449b183c4abe5150f2f25', '65b479aea55047529eef5f407c431d60','8a980c0539164f38af6463cdbe651cf1'];
+const apiKeys = ['7c3260f46aa74dd9b08f8cd8b5b5d942'];
 let currentApiKeyIndex = 0;
 const container = document.getElementById('container');
 const searchresultspan = document.getElementById('searchresultspan');

@@ -6,7 +6,7 @@ window.addEventListener('load', () => {
   fetchNews('home');
 });
 var count = 0;
-const apiKeys = ['7c3260f46aa74dd9b08f8cd8b5b5d942'];
+const apiKeys = [''];
 let currentApiKeyIndex = 0;
 const container = document.getElementById('container');
 const searchresultspan = document.getElementById('searchresultspan');

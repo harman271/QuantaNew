@@ -25,7 +25,7 @@ app.get('/fetchData', async (req, res) => {
     // Construct the API URL based on the search parameter
     let url;
     if (search === 'home') {
-        url = `https://api.worldnewsapi.com/top-news?source-country=au&language=in&api-key=${apiKeys[currentApiKeyIndex]}`;
+        url = `https://api.worldnewsapi.com/top-news?source-country=in&language=en&api-key=${apiKeys[currentApiKeyIndex]}`;
     } else {
         url = `https://api.worldnewsapi.com/search-news?api-key=${apiKeys[currentApiKeyIndex]}&text=${search}`;
     }

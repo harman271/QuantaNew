@@ -2,18 +2,18 @@
   "version": 2,
   "builds": [
     {
-      "src": "server.js",  // Corrected the src path to server.js
+      "src": "server.js", 
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/fetchData",  // Updated route to specifically match your API endpoint
-      "dest": "/server.js"   // This should point to your server file
+      "src": "/fetchData",  
+      "dest": "/server.js"   
     },
     {
-      "src": "/(.*)",        // This will handle everything else
-      "dest": "/server.js"   // All other requests will go to server.js
+      "src": "/(.*)",        
+      "dest": "/server.js"   
     }
   ]
 }

@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 3000;  // Use process.env.PORT for Vercel
 
 // Store multiple API keys if needed
 const apiKeys = [
+    '7c3260f46aa74dd9b08f8cd8b5b5d942',
     '2dd75c8da8ca46368966099abbe852a2',
     '65b479aea55047529eef5f407c431d60',
     '8a980c0539164f38af6463cdbe651cf1',

@@ -1,7 +1,7 @@
 {
   "name": "quantanew-main",
   "version": "1.0.0",
-  "main": "server.js",  // Update to match your actual server file
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"

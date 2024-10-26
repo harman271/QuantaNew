@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT =3000;
 
 // Store multiple API keys if needed
 const apiKeys = ['2dd75c8da8ca46368966099abbe852a2, 65b479aea55047529eef5f407c431d60','8a980c0539164f38af6463cdbe651cf1','543b3f2fe08449b183c4abe5150f2f25'];
